@@ -1,0 +1,13 @@
+.bGround {
+    /*background-image: url("../Images/backgroum.png");*/
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.error-message {
+    color: red;
+    
+  }

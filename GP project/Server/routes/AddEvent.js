@@ -1,22 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const {Events} = require('../models');
+const {Event} = require('../models');
 
 router.get('/', async (req, res) => {
-    const listOfEvents = await Events.findAll();
+    const listOfEvents = await Event.findAll();
     res.json(listOfEvents);
 });
-
-router.get('/:EventID', (req, res) => {
-    res.json(req.Events);
-})
 
 
 
 router.post('/', async (req, res) => {
-    const post = req.body;
-    await Events.create(post);
-    res.json(post);
+    const event = req.body;
+    await Event.create(event);
+    res.json(event);
 });
 
 module.exports = router;
