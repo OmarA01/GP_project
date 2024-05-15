@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
      }
-     
     });
+    
    Room.associate = (models) => {
         Room.belongsToMany(models.Event, { through: 'EventRoom' });
    };

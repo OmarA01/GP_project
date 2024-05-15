@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
       Type: {
-        type: DataTypes.ENUM('1', '2', '3', '4'), 
+        type: DataTypes.ENUM('1', '2', '3', '4', '5', '6', '7'), //1 (accepted), 2 (vice president), 3 (administration manager), 4(Tala), 5 (direct manager), 6 (rejected), 7 (finished)
         allowNull: false,
       },
       ActivityName: {
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Event.associate = (models) => {
       Event.hasOne(models.Report, {
-        foreignKey: 'ActivityID',
+        foreignKey: 'EventID',
         onDelete: 'CASCADE',
         as: 'report',
       });
@@ -61,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Event.belongsTo(models.User, {
-      foreignKey: 'UserID',
+      foreignKey: 'UserEmail',
       onDelete: 'CASCADE', 
     });
 

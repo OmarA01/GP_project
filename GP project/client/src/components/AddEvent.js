@@ -1,8 +1,8 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Checkbox from '@mui/material/Checkbox';
-import BackGroundImage from '../Images/backgroum.png';
-import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
+import { Formik, Form, FastField, Field, ErrorMessage, FieldArray } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { TextField, Button} from '@mui/material'
 import '../CssFiles/AddEvent.css';
@@ -27,8 +27,10 @@ function AddEvent() {
     };*/
 
    
-
-
+    const navigate = useNavigate();
+    const today = new Date();
+    const minDate = new Date(today.setDate(today.getDate() /*+ 7*/)).toISOString().split('T')[0];
+    
     const initialValues = {
         Type: 1,
         ActivityName: '',
@@ -49,13 +51,16 @@ function AddEvent() {
     const validationSchema = Yup.object().shape({
         ActivityName: Yup.string().required(),
         Organizer: Yup.string().required(),
-        DateOfEvent: Yup.date().required(),
+        DateOfEvent: Yup.date().required().min(new Date(), 'Event date must be in the future'),
         Location: Yup.string().required(),
         StartTime: Yup.string().required(),
-        FinishTime: Yup.string().required(),
-        FinancingValue: Yup.number().required(),
+        FinishTime: Yup.string().required().test('is-greater', 'Finish time must be after start time', function(value) {
+            const { StartTime } = this.parent;
+            return !StartTime || !value || value > StartTime;
+          }),
+        FinancingValue: Yup.number().positive().required(),
         FinancingEntity: Yup.string().required(),
-        NumberOfAudience: Yup.number().required(),
+        NumberOfAudience: Yup.number().positive().required(),
         AudienceNames: Yup.array().of(Yup.string()),
         vipVisitors: Yup.array().of(Yup.object().shape({
             Name: Yup.string(),
@@ -71,7 +76,7 @@ function AddEvent() {
     
     const handleVipCheckboxChange = (event) => {
         setVipChecked(event.target.checked);
-    };
+    };      
 
     const handleAbroadCheckboxChange = (index) => {
         const newAbroadCheckedArray = [...abroadCheckedArray];
@@ -81,12 +86,26 @@ function AddEvent() {
 
     const onSubmit = (data) => {
         
-            console.log(data);
+        axios.post("http://localhost:3001/AddEvent", data, {headers: {accessToken: localStorage.getItem("accessToken")}} ).then((response) => {
+            if(response.data.error) 
+                console.log(response.data.error);
+            else {
+                console.log("worked", data);
+                navigate('/TrackEvents', {state: {message: 'Event added successfully'}});
+            }
+        }).catch(error => {
+            if(error.response)
+                alert(error.response.data.error)
+            else if(error.request)
+                alert(error.request)
+            else
+                alert(error.message)
+        })
         
     };
 
     return (
-        <div className="bGround">
+        <div className="addEvent">
             <Formik
             initialValues={initialValues}
             onSubmit={onSubmit}
@@ -97,7 +116,7 @@ function AddEvent() {
                         <div className='row'>
                             <div className='col-md-6'>
                                 <label>ActivityName: </label> 
-                                <ErrorMessage name="ActivityName" className="error-message" />
+                                <ErrorMessage name="ActivityName" component="div" className="error-message" />
                                 <Field 
                                     id="ActivityName"
                                     name="ActivityName"
@@ -110,7 +129,7 @@ function AddEvent() {
                             </div>
                             <div className='col-md-6'>
                                 <label>Organizer: </label> 
-                                <ErrorMessage name="Organizer" />
+                                <ErrorMessage name="Organizer" component="div" className="error-message" />
                                 <Field 
                                     id="Organizer"
                                     name="Organizer"
@@ -125,11 +144,16 @@ function AddEvent() {
                         <div className='row'>
                             <div className='col-md-6'>
                                 <label>DateOfEvent: </label> 
-                                <ErrorMessage name="DateOfEvent" />
+                                <ErrorMessage name="DateOfEvent" component="div" className="error-message" />
                                 <Field 
                                     id="DateOfEvent"
                                     name="DateOfEvent"
                                     type="date"
+                                    InputProps={{
+                                        inputProps: { 
+                                            min: minDate  // Ensure the minimum date is set correctly here
+                                        }
+                                    }}
                                     as={TextField}
                                     fullWidth
                                     variant="outlined"
@@ -137,7 +161,7 @@ function AddEvent() {
                             </div>
                             <div className='col-md-6'>
                                 <label>Location: </label> 
-                                <ErrorMessage name="Location" />
+                                <ErrorMessage name="Location" component="div" className="error-message"/>
                                 <Field 
                                     id="Location"
                                     name="Location"
@@ -151,7 +175,7 @@ function AddEvent() {
                         <div className='row'>
                             <div className='col-md-6'>
                                 <label>StartTime: </label> 
-                                <ErrorMessage name="StartTime" />
+                                <ErrorMessage name="StartTime" component="div" className="error-message"/>
                                 <Field 
                                     id="StartTime"
                                     name="StartTime"
@@ -163,7 +187,7 @@ function AddEvent() {
                                 </div>
                                 <div className='col-md-6'>
                                     <label>FinishTime: </label> 
-                                    <ErrorMessage name="FinishTime" />
+                                    <ErrorMessage name="FinishTime" component="div" className="error-message"/>
                                     <Field 
                                         id="FinishTime"
                                         name="FinishTime"
@@ -177,11 +201,15 @@ function AddEvent() {
                         <div className='row'>
                             <div className='col-md-6'>
                                 <label>FinancingValue: </label> 
-                                <ErrorMessage name="FinancingValue" />
+                                <ErrorMessage name="FinancingValue" component="div" className="error-message"/>
                                 <Field 
                                     id="FinancingValue"
                                     name="FinancingValue"
                                     type="number"
+                                    inputProps={{ 
+                                        min: "0",
+                                        placeholder: "FinancingValue (JD)",
+                                    }}
                                     as={TextField}
                                     fullWidth
                                     variant="outlined"
@@ -189,7 +217,7 @@ function AddEvent() {
                             </div>
                             <div className='col-md-6'>
                                 <label>FinancingEntity: </label> 
-                                <ErrorMessage name="FinancingEntity" />
+                                <ErrorMessage name="FinancingEntity" component="div" className="error-message"/>
                                 <Field 
                                     id="FinancingEntity"
                                     name="FinancingEntity"
@@ -201,36 +229,17 @@ function AddEvent() {
                             </div>
                         </div>
                         <label>NumberOfAudience: </label> 
-                        <ErrorMessage name="NumberOfAudience" />
+                        <ErrorMessage name="NumberOfAudience" component="div" className="error-message"/>
                         <Field 
                             id="NumberOfAudience"
                             name="NumberOfAudience"
                             type="number"
+                            inputProps={{ min: "0" }}
                             as={TextField}
                             fullWidth
                             variant="outlined"
                         />
-                        <FieldArray name="AudienceNames">
-                        {(arrayHelpers) => {
-                            const { values } = formik;
-                            const NumberOfAudience = values?.NumberOfAudience || 0;
-
-                            const audienceNameFields = Array.from({ length: NumberOfAudience }, (_, index) => (
-                                <Field
-                                    key={index}
-                                    name={`AudienceNames.${index}`}
-                                    type="text"
-                                    as={TextField}
-                                    fullWidth
-                                    variant="outlined"
-                                    label={`Audience ${index + 1}`}
-                                />
-                            ));
-
-                            return <>{audienceNameFields}</>;
-                        }}
-                        </FieldArray>
-
+                    <br/>
                     <label>VIP Visitors:</label>
                     <Checkbox
                         id="vipCheckbox"
@@ -327,7 +336,7 @@ function AddEvent() {
                         )}
                     </FieldArray>
                     )}
-
+                        <br/>
                         <button type="submit"> submit </button>
                     </Form>
             )} 

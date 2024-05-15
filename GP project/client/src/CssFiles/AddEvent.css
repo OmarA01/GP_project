@@ -1,13 +1,90 @@
-.bGround {
-    /*background-image: url("../Images/backgroum.png");*/
-    background-size: cover;
-    background-position: center;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+/* General styling for the addEvent container */
+body {
+    background-image: url('../Images/backgroumopecity.png');
+    background-size: cover; /* Cover the entire viewport */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-attachment: fixed; /* Keep the background fixed during scrolling */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
 }
 
+.addEvent {
+    background-color: none; 
+    padding: 20px; 
+    border-radius: 8px; 
+
+    max-width: 900px; 
+    margin: 40px auto; 
+    overflow: hidden; 
+}
+
+/* Styling for each row in the form */
+.addEvent .row {
+    margin-bottom: 20px; /* Space between rows */
+}
+
+/* Styling for labels */
+.addEvent label {
+    display: block; /* Make labels block for better control */
+    margin-bottom: 5px; /* Space between label and input */
+    font-weight: bold; /* Bold font for labels */
+    color: #333; /* Dark grey color for text */
+}
+
+/* Error message styling */
 .error-message {
+    color: #d32f2f; /* Red color for error messages */
+    font-size: 0.85rem; /* Smaller font size for error messages */
+    margin-top: 2px; /* Small space above the error message */
+}
+
+/* Styling for input fields using Material-UI classes */
+.addEvent .MuiTextField-root {
+    width: 100%; /* Full width for text fields */
+}
+
+/* Styling for checkboxes and their labels */
+.addEvent .MuiCheckbox-root {
+    margin-right: 8px; /* Space between checkbox and label */
+}
+
+/* Style for overflow container for dynamically added fields */
+.addEvent .overflow-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px; /* Padding inside the container */
+    margin-top: 10px; /* Space above the container */
+}
+
+/* Button styling */
+.addEvent button {
+    background-color: #007bff; /* Blue background color */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding inside the button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-top: 20px; /* Space above the button */
+}
+
+.addEvent button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Styling for the remove VIP button for a specific interaction */
+.addEvent .remove-vip {
+    background-color: #dc3545; /* Red background color */
+    margin-top: 10px; /* Space above the button */
+}
+
+.addEvent .remove-vip:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+.addEvent .error-message {
     color: red;
-    
-  }
+}

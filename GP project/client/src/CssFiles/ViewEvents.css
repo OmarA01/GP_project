@@ -1,0 +1,125 @@
+body {
+  background-image: url('../Images/backgroumopecity.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.bGround {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+}
+
+.heading {
+  margin-top: 40px;
+  margin-bottom: 100px;
+  margin-right: 40px;
+}
+
+.title {
+  color: black;
+  font-weight: bold;
+  font-size: 70px;
+}
+
+.searchContainer {
+  display: inline-block;
+  align-items: center;
+}
+
+.searchBar {
+  background-color: rgb(218, 216, 250);
+  border-radius: 30px;
+  padding-left: 200px;
+  padding-top: 10px;
+  padding-right: 220px;
+  padding-bottom: 10px;
+  margin-bottom: 100px;
+  margin-left: 100px;
+  height: 100%;
+}
+
+.filterDropdown {
+  background-color: rgb(218, 216, 250);
+  border-radius: 30px;
+  margin-left: 10px;
+  padding: 10px;
+  height: 100%;
+  border: none;
+  outline: none;
+  transition: all ease;
+}
+
+.filterDropdown:focus {
+  border: 2px solid blue;
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
+  border-radius: 15px;
+}
+
+.eventP {
+  width: 400px;
+  position: relative;
+  border: 1px solid black;
+  border-radius: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 800px;
+  display: inline-block;
+  margin-bottom: 30px;
+  background-color: white;
+}
+
+.eventNameContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eventName {
+  margin-left: 20px;
+  font-size: medium;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.eventDate {
+  flex: 1;
+  white-space: nowrap;
+  margin-left: 280px;
+}
+
+.detailsP {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+}
+
+.detailsP a {
+  text-decoration: none;
+  font-size: medium;
+}
+
+.statusViewP {
+  display: inline-block;
+  margin: 0 10px; 
+  padding: 10px;
+  margin-top: 3px;
+  color: white;
+}
+
+.acceptedP {
+  background-color: green;
+}
+
+.rejectedP {
+  background-color: #8B0000;
+}
+
+.finishedP {
+  background-color: gray;
+}
